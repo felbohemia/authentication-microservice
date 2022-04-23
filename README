@@ -1,0 +1,33 @@
+In typical micro service architecture with a service or api gateway,
+
+It is a good practice to have an authentication service where requests are first of all authenticated and if the authentication test passed successfully, the proxy service(gateway) should forward the request to the appropriate request handler.
+
+In this specific case, JSON web token is used for authentication and this is how it works:
+
+When a request lands on the gateway, the gateway finds out it needs authorization or not, if it does not need authorisation, the request is simply proxied(forwarded) to the appropriate service meant to handle it. In this case, the Authentication service which will authenticate the user and then  returns a jwt so that when  the user or the application the user is using issues another request which needs authorisation, the authorisation is passed along side with the request payload if there is any to the gateway. The gateway validates the token and then proxy the request to the destined handler.
+
+The current setup assumes each of the application will be in a docker container or using docker compose. To run it normally you will need to comment out the following:
+
+spring.cloud.consul.config.prefix=config
+spring.cloud.consul.config.format=yaml
+spring.cloud.consul.config.default-context=defaults
+spring.cloud.consul.config.data-key=application.yml
+spring.config.import=optional:consul:
+
+Since these configs are meant for contacting consul config
+
+You also need to replace this line:
+spring.datasource.url=jdbc:mysql://host.docker.internal:3306/multiplicationjpadb?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+
+With:
+
+spring.datasource.url=jdbc:mysql://localhost:3306/multiplicationjpadb?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+
+So as to be able to connect to your mysql database from out side a docker container; the previous set up ensure that you container can interact with mysql running on your local host.
+
+Finally, remember to use your own database credentials
+
+Good luck!
+
+
+ 
