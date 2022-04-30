@@ -99,11 +99,11 @@
 		  the exchange,queue, bindings and sometime rabbittemplate
 		  when sending or publishing events the exchange
 		-->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-amqp</artifactId>
 			<version>2.6.6</version>
-		</dependency>
+		</dependency>-->
 
 	</dependencies>
 	<dependencyManagement>
